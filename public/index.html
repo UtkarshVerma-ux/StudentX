@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Issue Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Submit an Issue</h1>
+      <p class="tagline">Your voice matters. Report freely and anonymously.</p>
+    </header>
+
+    <form id="issueForm">
+      <label for="issueText">Describe your issue</label>
+      <textarea id="issueText" rows="6" placeholder="Write here..."></textarea>
+
+      <label class="upload-label" for="proofFile">Upload proof (images/videos)</label>
+      <input type="file" id="proofFile" accept="image/*,video/*" multiple />
+      <small>Max file size: 1MB each</small>
+
+      <div class="preview-container" id="previewContainer"></div>
+
+      <div class="guidelines">
+        <label><input type="checkbox" id="guideline1" /> No abusive or threatening language</label>
+        <label><input type="checkbox" id="guideline2" /> No fake reports</label>
+        <label><input type="checkbox" id="guideline3" /> Stay respectful and constructive</label>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Issue</button>
+      <div id="messageBox"></div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
