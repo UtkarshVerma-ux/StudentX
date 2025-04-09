@@ -1,5 +1,3 @@
-// script.js
-
 // Toggle dark mode
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = createButton("🌙 Toggle Dark Mode", {
@@ -49,7 +47,7 @@ document.getElementById("issueForm").addEventListener("submit", async function (
   }
 
   const formData = new FormData();
-  formData.append("text", issueText);
+  formData.append("description", issueText); // fixed here
   formData.append("userId", getOrCreateUserId());
 
   selectedFiles.forEach(file => {
