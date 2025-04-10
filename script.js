@@ -1,4 +1,3 @@
-// Toggle dark mode
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = createButton("🌙 Toggle Dark Mode", {
     position: "fixed",
@@ -20,8 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-let submissionCount = 0;
-document.getElementById("issueForm").addEventListener("submit", async function (e) {
+let selectedFiles = [];
+const form = document.getElementById("issueForm");
+const proofFile = document.getElementById("proofFile");
+const previewContainer = document.getElementById("previewContainer");
+const messageBox = document.getElementById("messageBox");
+const submitBtn = document.getElementById("submitBtn");
+const modal = document.getElementById("successModal");
+const closeModalBtn = document.getElementById("closeModalBtn");
+
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const issueText = document.getElementById("issueText").value.trim();
@@ -30,7 +37,6 @@ document.getElementById("issueForm").addEventListener("submit", async function (
     document.getElementById("guideline2").checked,
     document.getElementById("guideline3").checked,
   ];
-  const messageBox = document.getElementById("messageBox");
 
   messageBox.textContent = "";
   messageBox.style.color = "red";
@@ -47,12 +53,14 @@ document.getElementById("issueForm").addEventListener("submit", async function (
   }
 
   const formData = new FormData();
-  formData.append("description", issueText); // fixed here
+  formData.append("description", issueText);
   formData.append("userId", getOrCreateUserId());
 
-  selectedFiles.forEach(file => {
-    formData.append("media", file);
-  });
+  selectedFiles.forEach(file => formData.append("media", file));
+
+  // Disable submit and show loading state
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
   try {
     const res = await fetch("/api/submitIssue", {
@@ -64,21 +72,18 @@ document.getElementById("issueForm").addEventListener("submit", async function (
 
     if (!res.ok) throw new Error(result.message || "Submission failed.");
 
-    messageBox.style.color = "green";
-    submissionCount++;
-    messageBox.innerHTML = `<span class='success-animation'>✅ Issue submitted successfully!<br>Total Submissions: ${submissionCount}</span>`;
-
-    document.getElementById("issueForm").reset();
+    form.reset();
     selectedFiles = [];
     renderPreviews();
+    showModal();
+
   } catch (err) {
     messageBox.textContent = err.message;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Issue";
   }
 });
-
-const proofFile = document.getElementById("proofFile");
-const previewContainer = document.getElementById("previewContainer");
-let selectedFiles = [];
 
 proofFile.addEventListener("change", async function () {
   const filePromises = Array.from(this.files).map(async file => {
@@ -145,9 +150,7 @@ function compressFile(file) {
     if (file.type.startsWith("image")) {
       const img = new Image();
       const reader = new FileReader();
-      reader.onload = function (e) {
-        img.src = e.target.result;
-      };
+      reader.onload = e => (img.src = e.target.result);
       reader.readAsDataURL(file);
 
       img.onload = function () {
@@ -155,19 +158,14 @@ function compressFile(file) {
         const ctx = canvas.getContext("2d");
 
         const maxSize = 800;
-        let width = img.width;
-        let height = img.height;
+        let { width, height } = img;
 
-        if (width > height) {
-          if (width > maxSize) {
-            height *= maxSize / width;
-            width = maxSize;
-          }
-        } else {
-          if (height > maxSize) {
-            width *= maxSize / height;
-            height = maxSize;
-          }
+        if (width > height && width > maxSize) {
+          height *= maxSize / width;
+          width = maxSize;
+        } else if (height > maxSize) {
+          width *= maxSize / height;
+          height = maxSize;
         }
 
         canvas.width = width;
@@ -192,3 +190,16 @@ function getOrCreateUserId() {
   }
   return userId;
 }
+
+// Modal handling
+function showModal() {
+  modal.style.display = "block";
+}
+
+closeModalBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+window.addEventListener("click", e => {
+  if (e.target === modal) modal.style.display = "none";
+});

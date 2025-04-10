@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Issue Portal</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -29,9 +29,17 @@
         <label><input type="checkbox" id="guideline3" /> Stay respectful and constructive</label>
       </div>
 
-      <button type="submit" class="submit-btn">Submit Issue</button>
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Issue</button>
       <div id="messageBox"></div>
     </form>
+  </div>
+
+  <!-- Modal Dialog -->
+  <div id="successModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModalBtn">&times;</span>
+      <p>✅ Your issue has been submitted successfully!</p>
+    </div>
   </div>
 
   <script src="script.js"></script>

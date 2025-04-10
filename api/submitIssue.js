@@ -40,7 +40,8 @@ export default async function handler(req, res) {
       });
     });
 
-    const { description, userId } = data.fields;
+    // Note: "text" corresponds to frontend key
+    const { text: description, userId } = data.fields;
 
     if (!description || !userId) {
       return res.status(400).json({ message: "Missing required fields" });
