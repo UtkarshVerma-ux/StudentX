@@ -8,9 +8,9 @@ body {
 }
 
 .container {
-  max-width: 700px;
-  margin: 3rem auto;
-  padding: 2rem;
+  max-width: 90%;
+  margin: 2rem auto;
+  padding: 1.5rem;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -18,7 +18,7 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 h1 {
@@ -33,7 +33,7 @@ h1 {
 form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
 textarea {
@@ -58,12 +58,13 @@ input[type="file"] {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+  justify-content: center;
 }
 
 .preview-item {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -137,7 +138,7 @@ input[type="file"] {
 
 .modal-content {
   background-color: #fff;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -190,4 +191,21 @@ input[type="file"] {
 
 .dark-mode .close-btn {
   color: white;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .container {
+    max-width: 700px;
+    padding: 2rem;
+  }
+
+  .preview-item {
+    width: 120px;
+    height: 120px;
+  }
+
+  .submit-btn {
+    font-size: 1.1rem;
+  }
 }
