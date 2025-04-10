@@ -16,18 +16,18 @@
 
     <form id="issueForm">
       <label for="issueText">Describe your issue</label>
-      <textarea id="issueText" rows="6" placeholder="Write here..."></textarea>
+      <textarea id="issueText" name="description" rows="6" placeholder="Write here..." required></textarea>
 
       <label class="upload-label" for="proofFile">Upload proof (images/videos)</label>
-      <input type="file" id="proofFile" accept="image/*,video/*" multiple />
-      <small>Max file size: 1MB each</small>
+      <input type="file" id="proofFile" name="media" accept="image/*,video/*" multiple />
+      <small>Max 5 files. 1MB each. Images/Videos only.</small>
 
       <div class="preview-container" id="previewContainer"></div>
 
       <div class="guidelines">
-        <label><input type="checkbox" id="guideline1" /> No abusive or threatening language</label>
-        <label><input type="checkbox" id="guideline2" /> No fake reports</label>
-        <label><input type="checkbox" id="guideline3" /> Stay respectful and constructive</label>
+        <label><input type="checkbox" id="guideline1" required /> No abusive or threatening language</label>
+        <label><input type="checkbox" id="guideline2" required /> No fake reports</label>
+        <label><input type="checkbox" id="guideline3" required /> Stay respectful and constructive</label>
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">Submit Issue</button>
@@ -39,7 +39,7 @@
   <div id="successModal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close-btn" id="closeModalBtn">&times;</span>
-      <p>✅ Your issue has been submitted successfully!</p>
+      <p class="modal-text">✅ Your issue has been submitted successfully!</p>
     </div>
   </div>
 

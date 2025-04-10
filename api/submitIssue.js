@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       });
     });
 
-    const { description, userId } = data.fields; // ✅ Match frontend key name
+    const { description, userId } = data.fields;
 
     if (!description || !userId) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -52,6 +52,10 @@ export default async function handler(req, res) {
       return res.status(403).json({ message: "You are blocked from posting." });
     }
 
+    // Count previous issues to determine the folder name
+    const userPostCount = await db.collection("issues").countDocuments({ userId });
+    const currentFolder = `issue-portal/${userId}/${userPostCount + 1}`;
+
     // Upload files to Cloudinary
     const media = [];
     const fileArray = Array.isArray(data.files.media)
@@ -63,14 +67,14 @@ export default async function handler(req, res) {
     for (const file of fileArray) {
       const result = await cloudinary.uploader.upload(file.filepath, {
         resource_type: "auto",
+        folder: currentFolder,
       });
       media.push({
         url: result.secure_url,
         type: result.resource_type,
       });
 
-      // Clean up local temp file
-      fs.unlinkSync(file.filepath);
+      fs.unlinkSync(file.filepath); // Delete temp file
     }
 
     // Save issue

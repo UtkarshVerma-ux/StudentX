@@ -48,11 +48,26 @@ textarea {
   resize: vertical;
   box-sizing: border-box;
   overflow: auto;
+  background-color: #ffffff;
+  transition: border-color 0.2s, background-color 0.3s;
+}
+
+textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  background-color: #f0f9ff;
 }
 
 input[type="file"] {
   padding: 0.5rem 0;
   font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+input[type="file"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .upload-label {
@@ -74,6 +89,13 @@ input[type="file"] {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #f3f4f6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.preview-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .preview-item img,
@@ -97,6 +119,12 @@ input[type="file"] {
   font-weight: bold;
   cursor: pointer;
   line-height: 1;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.remove-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
 }
 
 .guidelines label {
@@ -104,6 +132,7 @@ input[type="file"] {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.95rem;
+  margin-top: 0.3rem;
 }
 
 .submit-btn {
@@ -114,6 +143,12 @@ input[type="file"] {
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .submit-btn:disabled {
@@ -124,6 +159,7 @@ input[type="file"] {
 #messageBox {
   font-size: 0.95rem;
   min-height: 20px;
+  text-align: center;
 }
 
 /* Modal Styles */
@@ -138,6 +174,14 @@ input[type="file"] {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .modal-content {
@@ -180,12 +224,25 @@ input[type="file"] {
   border-color: #4b5563;
 }
 
+.dark-mode textarea:focus {
+  background-color: #1e293b;
+  border-color: #3b82f6;
+}
+
 .dark-mode .submit-btn {
   background-color: #3b82f6;
 }
 
+.dark-mode .submit-btn:hover {
+  background-color: #2563eb;
+}
+
 .dark-mode .remove-btn {
   background-color: #f87171;
+}
+
+.dark-mode .remove-btn:hover {
+  background-color: #ef4444;
 }
 
 .dark-mode .modal-content {

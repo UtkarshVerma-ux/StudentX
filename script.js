@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let selectedFiles = [];
+
 const form = document.getElementById("issueForm");
 const proofFile = document.getElementById("proofFile");
 const previewContainer = document.getElementById("previewContainer");
-const messageBox = document.getElementById("messageBox");
 const submitBtn = document.getElementById("submitBtn");
 const modal = document.getElementById("successModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
@@ -38,18 +38,12 @@ form.addEventListener("submit", async function (e) {
     document.getElementById("guideline3").checked,
   ];
 
-  messageBox.textContent = "";
-  messageBox.style.color = "red";
-  messageBox.style.textAlign = "center";
-
   if (!issueText) {
-    messageBox.textContent = "Please enter your issue.";
-    return;
+    return showTemporaryModal("⚠️ Please enter your issue.");
   }
 
   if (guidelines.includes(false)) {
-    messageBox.textContent = "Please agree to all guidelines before submitting.";
-    return;
+    return showTemporaryModal("⚠️ Please agree to all guidelines before submitting.");
   }
 
   const formData = new FormData();
@@ -74,10 +68,10 @@ form.addEventListener("submit", async function (e) {
     form.reset();
     selectedFiles = [];
     renderPreviews();
-    showModal();
-
+    updateFileInputState();
+    showModal("✅ Issue submitted successfully!");
   } catch (err) {
-    messageBox.textContent = err.message;
+    showModal(`❌ ${err.message}`);
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "Submit Issue";
@@ -85,7 +79,21 @@ form.addEventListener("submit", async function (e) {
 });
 
 proofFile.addEventListener("change", async function () {
-  const filePromises = Array.from(this.files).map(async file => {
+  let newFiles = Array.from(this.files).filter(file =>
+    file.type.startsWith("image") || file.type.startsWith("video")
+  );
+
+  // Limit to 5 total
+  const remainingSlots = 5 - selectedFiles.length;
+  if (remainingSlots <= 0) {
+    updateFileInputState();
+    this.value = "";
+    return;
+  }
+
+  newFiles = newFiles.slice(0, remainingSlots);
+
+  const filePromises = newFiles.map(async file => {
     if (file.size > 1024 * 1024) {
       alert(`"${file.name}" is larger than 1MB and will be compressed.`);
       return await compressFile(file);
@@ -96,6 +104,7 @@ proofFile.addEventListener("change", async function () {
   const files = (await Promise.all(filePromises)).filter(Boolean);
   selectedFiles = [...selectedFiles, ...files];
   renderPreviews();
+  updateFileInputState();
   this.value = "";
 });
 
@@ -114,6 +123,7 @@ function renderPreviews() {
       removeBtn.addEventListener("click", () => {
         selectedFiles.splice(index, 1);
         renderPreviews();
+        updateFileInputState();
       });
 
       previewItem.appendChild(media);
@@ -122,6 +132,13 @@ function renderPreviews() {
     };
     fileReader.readAsDataURL(file);
   });
+}
+
+function updateFileInputState() {
+  const isMaxed = selectedFiles.length >= 5;
+  proofFile.disabled = isMaxed;
+  proofFile.style.opacity = isMaxed ? "0.5" : "1";
+  proofFile.title = isMaxed ? "Maximum 5 files allowed" : "";
 }
 
 function createButton(text, styles = {}) {
@@ -190,8 +207,17 @@ function getOrCreateUserId() {
   return userId;
 }
 
-function showModal() {
+function showModal(message = "") {
+  const modalText = modal.querySelector(".modal-text");
+  if (modalText) modalText.textContent = message;
   modal.style.display = "block";
+}
+
+function showTemporaryModal(message) {
+  showModal(message);
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 3000);
 }
 
 closeModalBtn.addEventListener("click", () => {
