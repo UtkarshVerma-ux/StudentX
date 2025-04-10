@@ -58,7 +58,6 @@ form.addEventListener("submit", async function (e) {
 
   selectedFiles.forEach(file => formData.append("media", file));
 
-  // Disable submit and show loading state
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
@@ -191,7 +190,6 @@ function getOrCreateUserId() {
   return userId;
 }
 
-// Modal handling
 function showModal() {
   modal.style.display = "block";
 }
