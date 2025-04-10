@@ -1,5 +1,3 @@
-// api/submitIssue.js
-
 import { IncomingForm } from "formidable";
 import { v2 as cloudinary } from "cloudinary";
 import { MongoClient } from "mongodb";
@@ -40,8 +38,7 @@ export default async function handler(req, res) {
       });
     });
 
-    // Note: "text" corresponds to frontend key
-    const { text: description, userId } = data.fields;
+    const { description, userId } = data.fields; // ✅ Match frontend key name
 
     if (!description || !userId) {
       return res.status(400).json({ message: "Missing required fields" });
