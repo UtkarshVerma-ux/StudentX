@@ -8,12 +8,13 @@ body {
 }
 
 .container {
-  max-width: 90%;
+  max-width: 95%;
   margin: 2rem auto;
   padding: 1.5rem;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 header {
@@ -22,7 +23,7 @@ header {
 }
 
 h1 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .tagline {
@@ -38,15 +39,19 @@ form {
 
 textarea {
   width: 100%;
-  resize: vertical;
+  min-height: 120px;
+  max-height: 300px;
   padding: 1rem;
   font-size: 1rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+  overflow: auto;
 }
 
 input[type="file"] {
-  padding: 0.4rem;
+  padding: 0.5rem 0;
   font-size: 0.9rem;
 }
 
@@ -118,7 +123,6 @@ input[type="file"] {
 
 #messageBox {
   font-size: 0.95rem;
-  margin-top: -0.5rem;
   min-height: 20px;
 }
 
@@ -127,13 +131,13 @@ input[type="file"] {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1000;
 }
 
 .modal-content {
